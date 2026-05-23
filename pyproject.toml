@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "factorweave"
+version = "0.1.0"
+description = "Official Python client for the Factor Weave quant data API — factors, similarity search, leak-free labels, derived analytics, MCP."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Factor Weave", email = "support@factorweave.com" }]
+keywords = ["quant", "factor", "vector-similarity", "backtest", "stock", "embeddings", "mcp"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Financial and Insurance Industry",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Office/Business :: Financial :: Investment",
+]
+dependencies = ["requests>=2.28"]
+
+[project.optional-dependencies]
+pandas  = ["pandas>=1.5"]
+polars  = ["polars>=0.20"]
+all     = ["pandas>=1.5", "polars>=0.20"]
+
+[project.urls]
+Homepage      = "https://factorweave.com/"
+Documentation = "https://factorweave.com/#docs"
+Source        = "https://github.com/Blazing-Customs/factorweave"
+"OpenAPI spec"= "https://factorweave.com/api/openapi.json"
+
+[tool.setuptools.packages.find]
+where = ["src"]
