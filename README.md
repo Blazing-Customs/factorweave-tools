@@ -1,85 +1,63 @@
-# factorweave — official Python client
+# factorweave-tools
 
-Typed client for the [Factor Weave](https://factorweave.com/) quant data API.
-Factor data, vector similarity, leak-free forward-return labels, derived
-market analytics (factor dispersion, regime, risk-cluster tags, 32-D
-embeddings) and MCP — for ~12,000 US-listed tickers.
+Public tooling for the **[Factor Weave](https://factorweave.com/)** quant-factor data API — clients, add-ons, and integration recipes for the ~12,000 US-listed tickers covered by the platform.
 
-## Install
+Looking for a free key? Sign up at [factorweave.com](https://factorweave.com/) — 250 calls/day, no card.
 
-```bash
-pip install factorweave
-# optional adapters:
-pip install 'factorweave[pandas]'
-pip install 'factorweave[polars]'
-```
+---
 
-## Authenticate
+## What's in here
 
-Get a free account at https://factorweave.com, then mint a long-lived dev
-key on the Profile page (`fw_live_…`).
+| Path | What | Install / use |
+| --- | --- | --- |
+| [`python/`](./python/) | Official Python SDK — typed client with `pandas` / `polars` helpers, retry handling, paginated iterators | `pip install factorweave` ([PyPI](https://pypi.org/project/factorweave/)) |
+| [`sheets/`](./sheets/) | Google Sheets add-on — exposes Factor Weave as spreadsheet custom functions (`=FACTORWEAVE("AAPL","rsi")`) | Paste `Code.gs` into your Apps Script project |
 
-```python
-import factorweave as fw
-client = fw.Client(api_key="fw_live_...")
-# or, with an email/password login:
-client = fw.Client(); client.login("you@example.com", "...")
-```
+Future tooling — webhook templates (Slack/Discord/Zapier/n8n), notebook examples, MCP client configs — will land here under additional top-level directories. One repo, many doorways.
 
-## Quick recipes
+---
+
+## Quick taste
 
 ```python
-# Latest factor row for a ticker
-row = client.features("AAPL")
-print(row[0]["rsi"], row[0]["comp_score"])
+# Python SDK
+from factorweave import FactorWeave
+fw = FactorWeave(api_key="fw_live_…")
 
-# 252-day factor history → polars
-hist = client.features("AAPL", start="2024-01-01", end="2024-12-31").to_polars()
+row = fw.features("AAPL").latest()
+print(row.rsi, row.mom, row.comp_score)
 
-# Top 25 momentum names today
-client.top("mom", n=25).to_pandas()
-
-# Factor analogues — historical, not co-moving same-day ETFs
-n = client.find_similar("NVDA", method="cosine", min_lookback_days=30)
-for row in n["neighbors"][:5]:
-    print(row["ticker"], row["date"], row["features"]["rsi"])
-
-# Derived analytics
-client.market_context()                # FREE-friendly: today only
-client.market_context(history=True)    # HOBBY+: 252-day history
-client.report_card("AAPL")             # HOBBY+
-client.risk_cluster("TSLA")            # PRO+
-client.embedding("AAPL")               # QUANT
+hits = fw.similar("AAPL", method="cosine", limit=10, min_lookback_days=30)
+for h in hits:
+    print(h.ticker, h.date, h.distance)
 ```
 
-## Errors
-
-Failures raise typed exceptions you can catch granularly:
-
-```python
-from factorweave import AuthError, TierError, RateLimitError, NotFoundError
-
-try:
-    client.risk_cluster("AAPL")
-except TierError as e:
-    print(f"Need {e.required_tier}, you have {e.your_tier}")
-except RateLimitError:
-    print("daily quota exhausted")
+```
+# Google Sheets
+=FACTORWEAVE("AAPL", "rsi,mom,comp_score")     // spills across columns
+=FACTORWEAVE_TOP("mom", 25)                     // spills down a column
+=FACTORWEAVE_REGIME()                           // current SPY-vol regime
 ```
 
-## Honest framing
+---
 
-Factor Weave is a research substrate, not a return-prediction service.
-Our own leak-free testing — [research note](https://factorweave.com/research.html) —
-shows factor similarity does not forecast returns. The `supervised`
-similarity method is a return-weighted projection, not an oracle. Use the
-data for screening, peer-finding, regime-aware research, and assembling
-leak-free backtest datasets.
+## Honest positioning
 
-## Resources
+Factor Weave is a **research substrate** — clean, point-in-time, leak-free factor data plus similarity tooling. It is *not* a return-prediction service. Our own leak-free probes show factor similarity does not forecast forward returns; only risk-coherence (forward realised volatility of analogues) shows a meaningful signal. The methodology and results are public at [factorweave.com/research.html](https://factorweave.com/research.html).
 
-- Docs: https://factorweave.com/#docs
-- OpenAPI spec: https://factorweave.com/api/openapi.json
-- Swagger UI: https://factorweave.com/api/docs/swagger
-- MCP setup: https://factorweave.com/mcp.html
-- Support: support@factorweave.com
+Use these tools the honest way: to screen, explore, and assemble research data. The thesis is yours.
+
+---
+
+## Links
+
+- Main site · [factorweave.com](https://factorweave.com/)
+- API docs · [factorweave.com/api/docs](https://factorweave.com/api/docs)
+- OpenAPI · [factorweave.com/api/openapi.json](https://factorweave.com/api/openapi.json)
+- MCP setup · [factorweave.com/mcp.html](https://factorweave.com/mcp.html)
+- All integrations · [factorweave.com/integrations.html](https://factorweave.com/integrations.html)
+- Research note · [factorweave.com/research.html](https://factorweave.com/research.html)
+
+## License
+
+MIT — see [`python/LICENSE`](./python/LICENSE).
