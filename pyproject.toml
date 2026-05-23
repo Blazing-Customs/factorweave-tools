@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "factorweave"
-version = "0.1.0"
+version = "0.1.1"
 description = "Official Python client for the Factor Weave quant data API — factors, similarity search, leak-free labels, derived analytics, MCP."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -30,7 +30,9 @@ all     = ["pandas>=1.5", "polars>=0.20"]
 [project.urls]
 Homepage      = "https://factorweave.com/"
 Documentation = "https://factorweave.com/#docs"
-Source        = "https://github.com/Blazing-Customs/factorweave"
+Source        = "https://github.com/Blazing-Customs/factorweave-python"
+Issues        = "https://github.com/Blazing-Customs/factorweave-python/issues"
+Changelog     = "https://github.com/Blazing-Customs/factorweave-python/releases"
 "OpenAPI spec"= "https://factorweave.com/api/openapi.json"
 
 [tool.setuptools.packages.find]
