@@ -10,6 +10,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [{ name = "Factor Weave", email = "support@factorweave.com" }]
+maintainers = [{ name = "Blazing Customs", email = "support@factorweave.com" }]
 keywords = ["quant", "factor", "vector-similarity", "backtest", "stock", "embeddings", "mcp"]
 classifiers = [
   "Development Status :: 4 - Beta",
