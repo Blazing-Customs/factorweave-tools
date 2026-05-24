@@ -1,0 +1,5 @@
+# Root .gitignore ignores *.json globally; auto-generated clients have many
+# legitimate *.json files (composer.json, package.json, swagger metadata).
+# Un-ignore them here.
+!*.json
+!**/*.json

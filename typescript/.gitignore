@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.tgz
+.DS_Store
+
+# Root .gitignore globally ignores *.json — un-ignore the ones we need here.
+!package.json
+!package-lock.json
+!tsconfig.json
