@@ -1,0 +1,16 @@
+[package]
+name = "factorweave"
+version = "0.1.0"
+authors = ["support@factorweave.com"]
+description = "Quantitative factor data, vector similarity search, leak-free forward-return labels and derived market analytics (factor dispersion, regime, risk-cluster tags, 32-D embeddings) for ~12,000 US-listed tickers.  **Auth:** all data endpoints require either a `Bearer <jwt>` (obtain via POST /auth/login) or an `X-API-Key: fw_live_…` header (mint at /me/keys). Tier gating is enforced per endpoint — see the [Tiers docs](https://factorweave.com/#docs).  **Honest framing:** the data is a research substrate, not a return-prediction service. Our own leak-free testing ([research note](https://factorweave.com/research.html)) shows factor similarity does not forecast returns; the supervised similarity method is a return-weighted projection, not an oracle."
+license = "Proprietary"
+edition = "2021"
+
+[dependencies]
+serde = { version = "^1.0", features = ["derive"] }
+serde_with = { version = "^3.8", default-features = false, features = ["base64", "std", "macros"] }
+serde_json = "^1.0"
+serde_repr = "^0.1"
+url = "^2.5"
+uuid = { version = "^1.8", features = ["serde", "v4"] }
+reqwest = { version = "^0.12", features = ["json", "multipart"] }

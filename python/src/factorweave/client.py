@@ -179,7 +179,7 @@ class Client:
     # ---- internals ----
 
     def _headers(self, authed: bool = True) -> Dict[str, str]:
-        h = {"Accept": "application/json", "User-Agent": "factorweave-python/0.1.0"}
+        h = {"Accept": "application/json", "User-Agent": "factorweave-python/0.2.0"}
         if not authed:
             return h
         if self._api_key:

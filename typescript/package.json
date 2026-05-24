@@ -1,0 +1,61 @@
+{
+  "name": "@blazing-customs/factorweave",
+  "version": "0.1.0",
+  "description": "Official TypeScript client for the Factor Weave quant-factor data API — factors, vector similarity, leak-free labels, derived analytics, MCP for ~12,000 US-listed tickers.",
+  "keywords": [
+    "factorweave",
+    "quant",
+    "factor-data",
+    "vector-similarity",
+    "backtest",
+    "stock",
+    "embeddings",
+    "mcp",
+    "openapi",
+    "trading"
+  ],
+  "homepage": "https://factorweave.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Blazing-Customs/factorweave-tools.git",
+    "directory": "typescript"
+  },
+  "bugs": {
+    "url": "https://github.com/Blazing-Customs/factorweave-tools/issues"
+  },
+  "license": "MIT",
+  "author": "Factor Weave <support@factorweave.com>",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean --target node18",
+    "prepublishOnly": "npm run build",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

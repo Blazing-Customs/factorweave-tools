@@ -1,0 +1,1023 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: support@factorweave.com
+    name: Factor Weave support
+    url: https://factorweave.com/
+  description: |-
+    Quantitative factor data, vector similarity search, leak-free forward-return labels and derived market analytics (factor dispersion, regime, risk-cluster tags, 32-D embeddings) for ~12,000 US-listed tickers.
+
+    **Auth:** all data endpoints require either a `Bearer <jwt>` (obtain via POST /auth/login) or an `X-API-Key: fw_live_…` header (mint at /me/keys). Tier gating is enforced per endpoint — see the [Tiers docs](https://factorweave.com/#docs).
+
+    **Honest framing:** the data is a research substrate, not a return-prediction service. Our own leak-free testing ([research note](https://factorweave.com/research.html)) shows factor similarity does not forecast returns; the supervised similarity method is a return-weighted projection, not an oracle.
+  license:
+    name: Proprietary
+  title: Factor Weave API
+  version: 1.0.0
+servers:
+- description: Production
+  url: https://factorweave.com/api
+tags:
+- description: "No-auth metadata, health, demo."
+  name: Public
+- description: "Register, log in, manage your profile and dev keys."
+  name: Auth
+- description: Per-ticker factor rows and top-N rankings.
+  name: Data
+- description: "Top-K nearest setups by similarity (4 methods, tier-gated)."
+  name: Vector Search
+- description: Forward-return labels and binary targets — backtest fuel (PRO+).
+  name: Labels
+- description: "Whole-universe and per-ticker derivations — market context, report\
+    \ card, risk cluster, embeddings."
+  name: Derived Analytics
+- description: Indicator-threshold rule storage.
+  name: Alerts
+- description: "Stripe checkout, portal, webhook."
+  name: Billing
+- description: Quota counters and recent activity.
+  name: Usage
+- description: Model Context Protocol — stateless streamable-HTTP.
+  name: MCP
+- description: Operator-only.
+  name: Admin
+paths:
+  /health:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: OK
+      summary: Liveness check
+      tags:
+      - Public
+  /status:
+    get:
+      description: "Returns 503 when degraded (bundle stale, DB unreachable, etc.)\
+        \ — designed for uptime monitors."
+      responses:
+        "200":
+          description: Healthy
+        "503":
+          description: Degraded — see body.checks for what failed
+      summary: Detailed health + bundle freshness + degraded status
+      tags:
+      - Public
+  /manifest:
+    get:
+      description: "latest_date, ticker_count, generated_at, file map. Use this to\
+        \ know when the data refreshed."
+      responses:
+        "200":
+          description: Manifest
+      summary: Static bundle metadata
+      tags:
+      - Public
+  /config:
+    get:
+      description: paid_tiers_enabled and Stripe publishable key. Read by the frontend
+        at boot.
+      responses:
+        "200":
+          description: Config
+      summary: Runtime feature flags
+      tags:
+      - Public
+  /demo/{ticker}:
+    get:
+      parameters:
+      - description: Uppercase US ticker symbol.
+        example: AAPL
+        explode: false
+        in: path
+        name: ticker
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Curated factor subset + 8 cosine analogues
+        "403":
+          description: "Ticker is not in the demo sample (free account unlocks all\
+            \ 10,000+)"
+      summary: No-auth taste — one of the sample tickers
+      tags:
+      - Public
+  /demo/tickers:
+    get:
+      responses:
+        "200":
+          description: Ticker list
+      summary: The demo-sample ticker list (8 names)
+      tags:
+      - Public
+  /auth/register:
+    post:
+      description: Always creates a FREE account regardless of submitted subscription_tier
+        — paid upgrades happen via Stripe Checkout (POST /billing/create-checkout).
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_auth_register_post_request'
+        required: true
+      responses:
+        "200":
+          description: Account created
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad request
+      summary: Create account (free tier)
+      tags:
+      - Auth
+  /auth/login:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_auth_login_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+          description: Token + profile
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Missing or invalid authorization
+        "429":
+          description: Rate-limited (too many failed attempts)
+      summary: Exchange email + password for a JWT
+      tags:
+      - Auth
+  /auth/me:
+    get:
+      responses:
+        "200":
+          description: Profile
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Current user profile + tier + daily usage
+      tags:
+      - Auth
+  /me/keys:
+    get:
+      responses:
+        "200":
+          description: Key list (prefixes only — values shown once at creation)
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: List your long-lived dev API keys
+      tags:
+      - Auth
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_me_keys_post_request'
+      responses:
+        "201":
+          description: Key created (full value returned ONCE)
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Mint a new dev API key
+      tags:
+      - Auth
+  /me/keys/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Revoked
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Revoke a dev API key
+      tags:
+      - Auth
+  /features/{ticker}:
+    get:
+      description: No date params → latest single row. ?date= → that exact date. ?start_date=
+        & ?end_date= → range. History covers the last 252 trading days.
+      parameters:
+      - description: Uppercase US ticker symbol.
+        example: AAPL
+        explode: false
+        in: path
+        name: ticker
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: date
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          format: date
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/FeatureRow'
+                type: array
+          description: Feature row(s)
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Ticker / resource not found
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Factor row for a ticker
+      tags:
+      - Data
+  /top:
+    get:
+      parameters:
+      - description: "mom, meanrev, comp_score, rsi, z_52w, beta_spy, gap_pct, …"
+        explode: true
+        in: query
+        name: factor
+        required: true
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: "n"
+        required: false
+        schema:
+          default: 25
+          maximum: 100
+          minimum: 1
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: direction
+        required: false
+        schema:
+          default: desc
+          enum:
+          - asc
+          - desc
+          type: string
+        style: form
+      responses:
+        "200":
+          description: Ranked rows
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Top-N tickers by a factor
+      tags:
+      - Data
+  /csv/features:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: ticker
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            text/csv:
+              schema:
+                type: string
+          description: CSV
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: CSV export of a ticker's features
+      tags:
+      - Data
+  /vector-search/similar/{ticker}:
+    get:
+      description: "Tier-gated: cosine (FREE+), dtw (HOBBY+), label_aware (PRO+),\
+        \ supervised (QUANT). Each neighbor row carries its factor row + forward-return\
+        \ labels pre-joined."
+      parameters:
+      - description: Uppercase US ticker symbol.
+        example: AAPL
+        explode: false
+        in: path
+        name: ticker
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: method
+        required: false
+        schema:
+          default: cosine
+          enum:
+          - cosine
+          - dtw
+          - label_aware
+          - supervised
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 200
+          minimum: 1
+          type: integer
+        style: form
+      - description: Require neighbor_date ≥ min_lookback_days before query_date.
+          Use 30 to filter same-day co-moving ETFs.
+        explode: true
+        in: query
+        name: min_lookback_days
+        required: false
+        schema:
+          default: 0
+          minimum: 0
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_vector_search_similar__ticker__get_200_response'
+          description: Neighbors
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TierGateError'
+          description: Tier too low for this endpoint
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Top-K nearest setups by similarity
+      tags:
+      - Vector Search
+  /labels/{ticker}:
+    get:
+      description: "fwd_ret_1d/5d/20d + binary targets (target_1d_up1, target_5d_up3,\
+        \ target_20d_up10). Last 252 trading days."
+      parameters:
+      - description: Uppercase US ticker symbol.
+        example: AAPL
+        explode: false
+        in: path
+        name: ticker
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Labels
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TierGateError'
+          description: Tier too low for this endpoint
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Ticker / resource not found
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Leak-free forward-return labels (PRO+)
+      tags:
+      - Labels
+  /market-context:
+    get:
+      description: FREE = today's reading only; HOBBY+ = full 252-day history. ?latest=1
+        trims to today for any tier.
+      parameters:
+      - explode: true
+        in: query
+        name: latest
+        required: false
+        schema:
+          enum:
+          - 0
+          - 1
+          type: integer
+        style: form
+      responses:
+        "200":
+          description: Market context payload
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: "Whole-universe factor dispersion, breadth, regime"
+      tags:
+      - Derived Analytics
+  /report-card/{ticker}:
+    get:
+      parameters:
+      - description: Uppercase US ticker symbol.
+        example: AAPL
+        explode: false
+        in: path
+        name: ticker
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Report card
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TierGateError'
+          description: Tier too low for this endpoint
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: "Per-ticker digest — ranks, regime, risk cluster, unusualness (HOBBY+)"
+      tags:
+      - Derived Analytics
+  /risk-cluster/{ticker}:
+    get:
+      description: "calm / normal / stressed — derived from neighbours' realized forward\
+        \ vol. A risk-coherence signal, not a vol forecast."
+      parameters:
+      - description: Uppercase US ticker symbol.
+        example: AAPL
+        explode: false
+        in: path
+        name: ticker
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: Risk-cluster tag
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TierGateError'
+          description: Tier too low for this endpoint
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Volatility regime a ticker's factor analogues landed in (PRO+)
+      tags:
+      - Derived Analytics
+  /embedding/{ticker}:
+    get:
+      parameters:
+      - description: Uppercase US ticker symbol.
+        example: AAPL
+        explode: false
+        in: path
+        name: ticker
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_embedding__ticker__get_200_response'
+          description: 32-D vector
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TierGateError'
+          description: Tier too low for this endpoint
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Raw 32-D regime-aware embedding vector (QUANT)
+      tags:
+      - Derived Analytics
+  /alerts/rules:
+    get:
+      responses:
+        "200":
+          description: Rules
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: List your alert rules
+      tags:
+      - Alerts
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_alerts_rules_post_request'
+        required: true
+      responses:
+        "201":
+          description: Created
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Create an alert rule
+      tags:
+      - Alerts
+  /alerts/rules/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: Deleted
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Delete an alert rule
+      tags:
+      - Alerts
+  /billing/create-checkout:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_billing_create_checkout_post_request'
+        required: true
+      responses:
+        "200":
+          description: checkout_url
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Stripe Checkout URL for a tier upgrade
+      tags:
+      - Billing
+  /billing/create-portal:
+    post:
+      responses:
+        "200":
+          description: portal_url
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Stripe Billing Portal URL
+      tags:
+      - Billing
+  /billing/webhook:
+    post:
+      description: Signature-verified inside the handler. Not for client use.
+      responses:
+        "200":
+          description: Received
+        "400":
+          description: Invalid signature
+      summary: Stripe webhook receiver
+      tags:
+      - Billing
+  /usage:
+    get:
+      responses:
+        "200":
+          description: Usage payload
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Today + month-to-date stats
+      tags:
+      - Usage
+  /recent-activity:
+    get:
+      responses:
+        "200":
+          description: Activity log
+      security:
+      - bearerAuth: []
+      - apiKeyAuth: []
+      summary: Your last 50 API calls
+      tags:
+      - Usage
+  /mcp:
+    post:
+      description: "JSON-RPC 2.0 over POST. Supports `initialize`, `tools/list`, `tools/call`.\
+        \ 12 tools available — see https://factorweave.com/mcp.html and the MCP docs\
+        \ panel."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: JSON-RPC response
+      summary: Model Context Protocol — stateless streamable-HTTP
+      tags:
+      - MCP
+components:
+  parameters:
+    Ticker:
+      description: Uppercase US ticker symbol.
+      example: AAPL
+      explode: false
+      in: path
+      name: ticker
+      required: true
+      schema:
+        type: string
+      style: simple
+  responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad request
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Missing or invalid authorization
+    TierForbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TierGateError'
+      description: Tier too low for this endpoint
+    NotFound:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Ticker / resource not found
+    QuotaExceeded:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Daily quota exhausted for this tier
+  schemas:
+    Error:
+      example:
+        detail: detail
+      properties:
+        detail:
+          description: Human-readable error message
+          type: string
+      type: object
+    TierGateError:
+      example:
+        your_tier: FREE
+        required_tier: HOBBY
+        detail: detail
+      properties:
+        detail:
+          type: string
+        your_tier:
+          enum:
+          - FREE
+          - HOBBY
+          - PRO
+          - QUANT
+          type: string
+        required_tier:
+          enum:
+          - HOBBY
+          - PRO
+          - QUANT
+          type: string
+      type: object
+    FeatureRow:
+      additionalProperties: true
+      description: "Per (ticker, date) factor row. ~28 fields."
+      example:
+        date: 2000-01-23
+        ticker: ticker
+        beta_spy: 5.637376656633329
+        rv_20: 5.962133916683182
+        q_comp_score: 7
+        meanrev: 1.4658129805029452
+        rsi: 0.8008281904610115
+        mom: 6.027456183070403
+        comp_score: 2.3021358869347655
+      properties:
+        ticker:
+          type: string
+        date:
+          format: date
+          type: string
+        rsi:
+          nullable: true
+          type: number
+        mom:
+          description: Momentum
+          nullable: true
+          type: number
+        meanrev:
+          nullable: true
+          type: number
+        rv_20:
+          description: 20-day realized volatility
+          nullable: true
+          type: number
+        beta_spy:
+          nullable: true
+          type: number
+        comp_score:
+          nullable: true
+          type: number
+        q_comp_score:
+          description: Cross-sectional percentile (0–100)
+          nullable: true
+          type: integer
+      type: object
+    NeighborRow:
+      example:
+        date: 2000-01-23
+        score: 6.027456183070403
+        features:
+          date: 2000-01-23
+          ticker: ticker
+          beta_spy: 5.637376656633329
+          rv_20: 5.962133916683182
+          q_comp_score: 7
+          meanrev: 1.4658129805029452
+          rsi: 0.8008281904610115
+          mom: 6.027456183070403
+          comp_score: 2.3021358869347655
+        ticker: ticker
+        rank: 0
+        labels:
+          key: ""
+      properties:
+        ticker:
+          type: string
+        date:
+          format: date
+          type: string
+        rank:
+          type: integer
+        score:
+          type: number
+        features:
+          $ref: '#/components/schemas/FeatureRow'
+        labels:
+          additionalProperties: true
+          type: object
+      type: object
+    LoginResponse:
+      example:
+        access_token: access_token
+        subscription_tier: FREE
+        expires_at: 2000-01-23T04:56:07.000+00:00
+        user_id: 0
+        token_type: bearer
+        email: email
+      properties:
+        access_token:
+          type: string
+        token_type:
+          example: bearer
+          type: string
+        user_id:
+          type: integer
+        email:
+          type: string
+        subscription_tier:
+          enum:
+          - FREE
+          - HOBBY
+          - PRO
+          - QUANT
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+      type: object
+    _auth_register_post_request:
+      properties:
+        email:
+          format: email
+          type: string
+        password:
+          minLength: 8
+          type: string
+      required:
+      - email
+      - password
+      type: object
+    _auth_login_post_request:
+      properties:
+        email:
+          format: email
+          type: string
+        password:
+          type: string
+      required:
+      - email
+      - password
+      type: object
+    _me_keys_post_request:
+      properties:
+        name:
+          example: local-dev
+          type: string
+        ttl_days:
+          example: 365
+          maximum: 3650
+          minimum: 1
+          type: integer
+      type: object
+    _vector_search_similar__ticker__get_200_response:
+      example:
+        neighbors:
+        - date: 2000-01-23
+          score: 6.027456183070403
+          features:
+            date: 2000-01-23
+            ticker: ticker
+            beta_spy: 5.637376656633329
+            rv_20: 5.962133916683182
+            q_comp_score: 7
+            meanrev: 1.4658129805029452
+            rsi: 0.8008281904610115
+            mom: 6.027456183070403
+            comp_score: 2.3021358869347655
+          ticker: ticker
+          rank: 0
+          labels:
+            key: ""
+        - date: 2000-01-23
+          score: 6.027456183070403
+          features:
+            date: 2000-01-23
+            ticker: ticker
+            beta_spy: 5.637376656633329
+            rv_20: 5.962133916683182
+            q_comp_score: 7
+            meanrev: 1.4658129805029452
+            rsi: 0.8008281904610115
+            mom: 6.027456183070403
+            comp_score: 2.3021358869347655
+          ticker: ticker
+          rank: 0
+          labels:
+            key: ""
+        query_date: 2000-01-23
+        query_ticker: query_ticker
+      properties:
+        query_ticker:
+          type: string
+        query_date:
+          format: date
+          type: string
+        neighbors:
+          items:
+            $ref: '#/components/schemas/NeighborRow'
+          type: array
+      type: object
+    _embedding__ticker__get_200_response:
+      example:
+        ticker: ticker
+        as_of: 2000-01-23
+        dim: 32
+        embedding:
+        - 0.8008281904610115
+        - 0.8008281904610115
+      properties:
+        ticker:
+          type: string
+        as_of:
+          format: date
+          type: string
+        dim:
+          example: 32
+          type: integer
+        embedding:
+          items:
+            type: number
+          type: array
+      type: object
+    _alerts_rules_post_request:
+      properties:
+        name:
+          type: string
+        indicator:
+          enum:
+          - rsi
+          - price
+          - volume
+          - momentum
+          type: string
+        condition:
+          enum:
+          - '>'
+          - <
+          - =
+          - crosses_above
+          - crosses_below
+          type: string
+        value:
+          type: number
+        description:
+          type: string
+      required:
+      - condition
+      - indicator
+      - name
+      - value
+      type: object
+    _billing_create_checkout_post_request:
+      properties:
+        tier:
+          enum:
+          - HOBBY
+          - PRO
+          - QUANT
+          type: string
+        billing_period:
+          default: monthly
+          enum:
+          - monthly
+          - annual
+          type: string
+      required:
+      - tier
+      type: object
+  securitySchemes:
+    bearerAuth:
+      bearerFormat: JWT
+      description: JWT obtained from POST /auth/login. Expires in 24h.
+      scheme: bearer
+      type: http
+    apiKeyAuth:
+      description: Long-lived dev key starting `fw_live_…`. Mint via POST /me/keys.
+      in: header
+      name: X-API-Key
+      type: apiKey

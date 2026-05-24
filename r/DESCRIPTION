@@ -1,0 +1,26 @@
+Package: factorweave
+Type: Package
+Title: Factor Weave Quant-Factor Data API Client
+Version: 0.1.0
+Authors@R: person("Factor Weave", email = "support@factorweave.com", role = c("aut", "cre"))
+Description: R client for the Factor Weave quant-factor data API
+    (<https://factorweave.com/>). Daily factor scores, vector
+    similarity search, leak-free forward-return labels, and derived market
+    analytics (factor dispersion, regime, risk-cluster tags, 32-D
+    embeddings) for ~12,000 US-listed tickers. Factor Weave is a research
+    substrate: factor similarity does not forecast returns
+    (cross-sectional information coefficient is statistically zero on a
+    leak-free test); only risk-coherence shows a meaningful signal.
+License: MIT + file LICENSE
+URL: https://factorweave.com/,
+    https://github.com/Blazing-Customs/factorweave-tools
+BugReports: https://github.com/Blazing-Customs/factorweave-tools/issues
+Encoding: UTF-8
+LazyData: true
+Imports:
+    httr2 (>= 1.0.0),
+    jsonlite (>= 1.8.0)
+Suggests:
+    tibble,
+    testthat (>= 3.0.0)
+RoxygenNote: 7.3.0
