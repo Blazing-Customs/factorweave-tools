@@ -52,6 +52,27 @@ client.risk_cluster("TSLA")            # PRO+
 client.embedding("AAPL")               # QUANT
 ```
 
+## The `fw` CLI
+
+Installing `factorweave` also installs an `fw` command — the same client, exposed as subcommands. Friendly tables by default, `--json` for pipes.
+
+```bash
+export FACTORWEAVE_API_KEY=fw_live_…
+
+fw features AAPL                          # latest factor row
+fw features AAPL --start 2024-01-01 --end 2024-12-31
+fw top mom -n 25                          # top 25 momentum names
+fw similar AAPL --method cosine --limit 10
+fw market-context
+fw report-card NVDA                       # HOBBY+
+fw risk-cluster TSLA                      # PRO+
+fw embedding AAPL --json | jq '.vector | length'
+
+fw --help                                 # full command list
+```
+
+`fw health` and `fw manifest` work without auth (public endpoints).
+
 ## Errors
 
 Failures raise typed exceptions you can catch granularly:

@@ -8,12 +8,22 @@ Looking for a free key? Sign up at [factorweave.com](https://factorweave.com/) �
 
 ## What's in here
 
+### Hand-written first-party SDKs
+
 | Path | What | Install / use |
 | --- | --- | --- |
-| [`python/`](./python/) | Official Python SDK — typed client with `pandas` / `polars` helpers, retry handling, paginated iterators | `pip install factorweave` ([PyPI](https://pypi.org/project/factorweave/)) |
-| [`sheets/`](./sheets/) | Google Sheets add-on — exposes Factor Weave as spreadsheet custom functions (`=FACTORWEAVE("AAPL","rsi")`) | Paste `Code.gs` into your Apps Script project |
+| [`python/`](./python/) | Official Python SDK — typed client with `pandas` / `polars` helpers, retry handling, tier-aware exceptions. Also installs an `fw` CLI. | `pip install factorweave` · [PyPI](https://pypi.org/project/factorweave/) |
+| [`typescript/`](./typescript/) | Official TypeScript / JavaScript SDK — dual ESM+CJS, full types, native `fetch`, auto-retry on 429/5xx. Server-side Node 18+ / Bun / Deno / serverless. | `npm install @blazing-customs/factorweave` · [npm](https://www.npmjs.com/package/@blazing-customs/factorweave) |
+| [`r/`](./r/) | Official R package — `httr2`-based, idiomatic `data.frame` returns, retry on 429/5xx. | `install.packages("factorweave", repos = "https://blazing-customs.r-universe.dev")` · [r-universe](https://blazing-customs.r-universe.dev/) |
+| [`sheets/`](./sheets/) | Google Sheets add-on — exposes Factor Weave as spreadsheet custom functions (`=FACTORWEAVE("AAPL","rsi")`). | Paste [`Code.gs`](./sheets/Code.gs) into your Apps Script project. |
 
-Future tooling — webhook templates (Slack/Discord/Zapier/n8n), notebook examples, MCP client configs — will land here under additional top-level directories. One repo, many doorways.
+### Auto-generated clients
+
+| Path | What |
+| --- | --- |
+| [`generated/`](./generated/) | [openapi-generator](https://openapi-generator.tech/) clients from the live [OpenAPI spec](https://factorweave.com/api/openapi.json). Go, Rust, Ruby, PHP, Dart are committed; Java, C#, Kotlin, Swift are available on-demand via [`scripts/regenerate_clients.sh`](https://github.com/Blazing-Customs/factorweave/blob/main/scripts/regenerate_clients.sh) in the monorepo. |
+
+Future tooling — webhook templates (Slack/Discord/Zapier/n8n), MCP client configs, notebook examples — will land here under additional top-level directories. One repo, many doorways.
 
 ---
 
@@ -21,29 +31,71 @@ Future tooling — webhook templates (Slack/Discord/Zapier/n8n), notebook exampl
 
 ```python
 # Python SDK
-from factorweave import FactorWeave
-fw = FactorWeave(api_key="fw_live_…")
+from factorweave import Client
+client = Client(api_key="fw_live_…")
 
-row = fw.features("AAPL").latest()
-print(row.rsi, row.mom, row.comp_score)
+row  = client.features("AAPL")[0]
+top  = client.top("mom", n=25).to_pandas()
+hits = client.find_similar("AAPL", method="cosine", limit=10, min_lookback_days=30)
+card = client.report_card("AAPL")       # HOBBY+
+```
 
-hits = fw.similar("AAPL", method="cosine", limit=10, min_lookback_days=30)
-for h in hits:
-    print(h.ticker, h.date, h.distance)
+```bash
+# fw CLI (ships with the Python package)
+fw features AAPL
+fw top mom -n 25
+fw similar AAPL --method cosine
+```
+
+```typescript
+// TypeScript SDK
+import { FactorWeave } from '@blazing-customs/factorweave';
+
+const fw = new FactorWeave({ apiKey: process.env.FACTORWEAVE_API_KEY });
+const row  = await fw.latestFeatures('AAPL');
+const hits = await fw.similar('AAPL', { method: 'cosine', limit: 10 });
+const card = await fw.reportCard('AAPL');   // HOBBY+
+```
+
+```r
+# R package
+library(factorweave)
+client <- fw_client(api_key = "fw_live_…")
+
+row  <- fw_latest_features(client, "AAPL")
+top  <- fw_top(client, "mom", n = 25)
+hits <- fw_similar(client, "AAPL", method = "cosine", limit = 10)
 ```
 
 ```
 # Google Sheets
 =FACTORWEAVE("AAPL", "rsi,mom,comp_score")     // spills across columns
-=FACTORWEAVE_TOP("mom", 25)                     // spills down a column
-=FACTORWEAVE_REGIME()                           // current SPY-vol regime
+=FW_TOP("mom", 25)                              // spills down a column
+=FW_MARKET_CONTEXT()                            // current SPY-vol regime + dispersion + breadth
+=FW_REPORT_CARD("AAPL")                         // per-ticker digest (HOBBY+)
 ```
+
+---
+
+## What this dataset covers
+
+- ~12,000 US-listed tickers
+- Daily, point-in-time, leak-free
+- ~28 factor columns per ticker-day (returns, momentum, mean-reversion, RSI, ATR%, realized vol, beta vs SPY, composite score, cross-sectional ranks)
+- Forward-return labels (1d / 5d / 20d), leak-free
+- SPY-vol regime tagging (low / mid / high)
+- 32-dimensional regime-aware factor-state embeddings
+- Top-K nearest analogues via cosine / DTW / label-aware / supervised PLS
+- Daily factor dispersion, market breadth, regime transition odds
+- Per-ticker risk-cluster tags (calm / normal / stressed)
+
+Tier matrix is on the [pricing page](https://factorweave.com/landing-pages/).
 
 ---
 
 ## Honest positioning
 
-Factor Weave is a **research substrate** — clean, point-in-time, leak-free factor data plus similarity tooling. It is *not* a return-prediction service. Our own leak-free probes show factor similarity does not forecast forward returns; only risk-coherence (forward realised volatility of analogues) shows a meaningful signal. The methodology and results are public at [factorweave.com/research.html](https://factorweave.com/research.html).
+Factor Weave is a **research substrate**, not a return-prediction service. Our own leak-free probes show factor similarity does *not* forecast forward returns (cross-sectional information coefficient is statistically zero). Only risk-coherence — using factor analogues to forecast forward realized volatility — shows a meaningful signal (IC +0.062, t-stat +8.3 across 237 monthly observations 2005–2024). The full methodology and results are published at [factorweave.com/research.html](https://factorweave.com/research.html).
 
 Use these tools the honest way: to screen, explore, and assemble research data. The thesis is yours.
 
@@ -53,10 +105,11 @@ Use these tools the honest way: to screen, explore, and assemble research data. 
 
 - Main site · [factorweave.com](https://factorweave.com/)
 - API docs · [factorweave.com/api/docs](https://factorweave.com/api/docs)
-- OpenAPI · [factorweave.com/api/openapi.json](https://factorweave.com/api/openapi.json)
+- OpenAPI spec · [factorweave.com/api/openapi.json](https://factorweave.com/api/openapi.json)
 - MCP setup · [factorweave.com/mcp.html](https://factorweave.com/mcp.html)
-- All integrations · [factorweave.com/integrations.html](https://factorweave.com/integrations.html)
+- Integrations · [factorweave.com/integrations.html](https://factorweave.com/integrations.html)
 - Research note · [factorweave.com/research.html](https://factorweave.com/research.html)
+- llms.txt (LLM-readable index) · [factorweave.com/llms.txt](https://factorweave.com/llms.txt)
 
 ## License
 
