@@ -1,0 +1,28 @@
+# OpenAI Codex CLI MCP server configuration.
+#
+# Path: ~/.codex/config.toml
+#
+# Append (or merge) the following block into your existing Codex config.
+# Then Codex's `mcp` subcommand and any agent that uses it gets the 12
+# Factor Weave tools alongside its other servers.
+#
+# Replace `fw_live_REPLACE_ME` with the long-lived dev key you minted on
+# https://factorweave.com/ → Profile → API Access. MCP access starts at
+# the HOBBY tier ($19/mo); the FREE tier can call only `get_manifest`.
+
+[mcp_servers.factorweave]
+url             = "https://factorweave.com/api/mcp"
+transport       = "streamable_http"
+protocol_version = "2025-03-26"
+
+# Codex CLI passes whichever headers you list through to the MCP server.
+# Factor Weave accepts either an X-API-Key header (preferred for scripts)
+# or Authorization: Bearer <jwt>. Pick one.
+[mcp_servers.factorweave.http_headers]
+"X-API-Key" = "fw_live_REPLACE_ME"
+
+# --- Alternative auth (uncomment if you prefer bearer-style) ---
+# [mcp_servers.factorweave]
+# url             = "https://factorweave.com/api/mcp"
+# transport       = "streamable_http"
+# bearer_token_env_var = "FACTORWEAVE_TOKEN"   # Codex reads $FACTORWEAVE_TOKEN → Authorization: Bearer $FACTORWEAVE_TOKEN

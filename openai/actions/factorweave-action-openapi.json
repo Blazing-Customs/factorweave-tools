@@ -1,0 +1,801 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Factor Weave",
+    "version": "1.0.0",
+    "description": "Quant-factor data API for ~12,000 US-listed tickers. ~28 daily factor columns + leak-free forward-return labels + vector similarity search + derived market analytics. Research substrate \u2014 factor similarity does not predict returns; use for screening and regime-aware research.",
+    "contact": {
+      "name": "Factor Weave support",
+      "email": "support@factorweave.com",
+      "url": "https://factorweave.com/"
+    },
+    "license": {
+      "name": "Proprietary"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://factorweave.com/api",
+      "description": "Production"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Public"
+        ],
+        "summary": "Liveness check",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/manifest": {
+      "get": {
+        "tags": [
+          "Public"
+        ],
+        "summary": "Static bundle metadata",
+        "description": "latest_date, ticker_count, generated_at, file map. Use this to know when the data refreshed.",
+        "responses": {
+          "200": {
+            "description": "Manifest"
+          }
+        }
+      }
+    },
+    "/demo/{ticker}": {
+      "get": {
+        "tags": [
+          "Public"
+        ],
+        "summary": "No-auth taste \u2014 one of the sample tickers",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Ticker"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Curated factor subset + 8 cosine analogues"
+          },
+          "403": {
+            "description": "Ticker is not in the demo sample (free account unlocks all 10,000+)"
+          }
+        }
+      }
+    },
+    "/demo/tickers": {
+      "get": {
+        "tags": [
+          "Public"
+        ],
+        "summary": "The demo-sample ticker list (8 names)",
+        "responses": {
+          "200": {
+            "description": "Ticker list"
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Current user profile + tier + daily usage",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile"
+          }
+        }
+      }
+    },
+    "/features/{ticker}": {
+      "get": {
+        "tags": [
+          "Data"
+        ],
+        "summary": "Factor row for a ticker",
+        "description": "No date params \u2192 latest single row. ?date= \u2192 that exact date. ?start_date= & ?end_date= \u2192 range. History covers the last 252 trading days.",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Ticker"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Feature row(s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FeatureRow"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/top": {
+      "get": {
+        "tags": [
+          "Data"
+        ],
+        "summary": "Top-N tickers by a factor",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "factor",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "mom, meanrev, comp_score, rsi, z_52w, beta_spy, gap_pct, \u2026"
+          },
+          {
+            "name": "n",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "desc"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ranked rows"
+          }
+        }
+      }
+    },
+    "/csv/features": {
+      "get": {
+        "tags": [
+          "Data"
+        ],
+        "summary": "CSV export of a ticker's features",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CSV",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vector-search/similar/{ticker}": {
+      "get": {
+        "tags": [
+          "Vector Search"
+        ],
+        "summary": "Top-K nearest setups by similarity",
+        "description": "Tier-gated: cosine (FREE+), dtw (HOBBY+), label_aware (PRO+), supervised (QUANT). Each neighbor row carries its factor row + forward-return labels pre-joined.",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Ticker"
+          },
+          {
+            "name": "method",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "cosine",
+                "dtw",
+                "label_aware",
+                "supervised"
+              ],
+              "default": "cosine"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          },
+          {
+            "name": "min_lookback_days",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            },
+            "description": "Require neighbor_date \u2265 min_lookback_days before query_date. Use 30 to filter same-day co-moving ETFs."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Neighbors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "query_ticker": {
+                      "type": "string"
+                    },
+                    "query_date": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "neighbors": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/NeighborRow"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/TierForbidden"
+          }
+        }
+      }
+    },
+    "/labels/{ticker}": {
+      "get": {
+        "tags": [
+          "Labels"
+        ],
+        "summary": "Leak-free forward-return labels (PRO+)",
+        "description": "fwd_ret_1d/5d/20d + binary targets (target_1d_up1, target_5d_up3, target_20d_up10). Last 252 trading days.",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Ticker"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Labels"
+          },
+          "403": {
+            "$ref": "#/components/responses/TierForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/market-context": {
+      "get": {
+        "tags": [
+          "Derived Analytics"
+        ],
+        "summary": "Whole-universe factor dispersion, breadth, regime",
+        "description": "FREE = today's reading only; HOBBY+ = full 252-day history. ?latest=1 trims to today for any tier.",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "latest",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "enum": [
+                0,
+                1
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Market context payload"
+          }
+        }
+      }
+    },
+    "/report-card/{ticker}": {
+      "get": {
+        "tags": [
+          "Derived Analytics"
+        ],
+        "summary": "Per-ticker digest \u2014 ranks, regime, risk cluster, unusualness (HOBBY+)",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Ticker"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Report card"
+          },
+          "403": {
+            "$ref": "#/components/responses/TierForbidden"
+          }
+        }
+      }
+    },
+    "/risk-cluster/{ticker}": {
+      "get": {
+        "tags": [
+          "Derived Analytics"
+        ],
+        "summary": "Volatility regime a ticker's factor analogues landed in (PRO+)",
+        "description": "calm / normal / stressed \u2014 derived from neighbours' realized forward vol. A risk-coherence signal, not a vol forecast.",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Ticker"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Risk-cluster tag"
+          },
+          "403": {
+            "$ref": "#/components/responses/TierForbidden"
+          }
+        }
+      }
+    },
+    "/embedding/{ticker}": {
+      "get": {
+        "tags": [
+          "Derived Analytics"
+        ],
+        "summary": "Raw 32-D regime-aware embedding vector (QUANT)",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Ticker"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "32-D vector",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ticker": {
+                      "type": "string"
+                    },
+                    "as_of": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "dim": {
+                      "type": "integer",
+                      "example": 32
+                    },
+                    "embedding": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "$ref": "#/components/responses/TierForbidden"
+          }
+        }
+      }
+    },
+    "/usage": {
+      "get": {
+        "tags": [
+          "Usage"
+        ],
+        "summary": "Today + month-to-date stats",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usage payload"
+          }
+        }
+      }
+    },
+    "/recent-activity": {
+      "get": {
+        "tags": [
+          "Usage"
+        ],
+        "summary": "Your last 50 API calls",
+        "security": [
+          {
+            "bearerAuth": []
+          },
+          {
+            "apiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Activity log"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT obtained from POST /auth/login. Expires in 24h."
+      },
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": "Long-lived dev key starting `fw_live_\u2026`. Mint via POST /me/keys."
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string",
+            "description": "Human-readable error message"
+          }
+        }
+      },
+      "TierGateError": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string"
+          },
+          "your_tier": {
+            "type": "string",
+            "enum": [
+              "FREE",
+              "HOBBY",
+              "PRO",
+              "QUANT"
+            ]
+          },
+          "required_tier": {
+            "type": "string",
+            "enum": [
+              "HOBBY",
+              "PRO",
+              "QUANT"
+            ]
+          }
+        }
+      },
+      "FeatureRow": {
+        "type": "object",
+        "description": "Per (ticker, date) factor row. ~28 fields.",
+        "additionalProperties": true,
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "rsi": {
+            "type": "number",
+            "nullable": true
+          },
+          "mom": {
+            "type": "number",
+            "nullable": true,
+            "description": "Momentum"
+          },
+          "meanrev": {
+            "type": "number",
+            "nullable": true
+          },
+          "rv_20": {
+            "type": "number",
+            "nullable": true,
+            "description": "20-day realized volatility"
+          },
+          "beta_spy": {
+            "type": "number",
+            "nullable": true
+          },
+          "comp_score": {
+            "type": "number",
+            "nullable": true
+          },
+          "q_comp_score": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Cross-sectional percentile (0\u2013100)"
+          }
+        }
+      },
+      "NeighborRow": {
+        "type": "object",
+        "properties": {
+          "ticker": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "rank": {
+            "type": "integer"
+          },
+          "score": {
+            "type": "number"
+          },
+          "features": {
+            "$ref": "#/components/schemas/FeatureRow"
+          },
+          "labels": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "token_type": {
+            "type": "string",
+            "example": "bearer"
+          },
+          "user_id": {
+            "type": "integer"
+          },
+          "email": {
+            "type": "string"
+          },
+          "subscription_tier": {
+            "type": "string",
+            "enum": [
+              "FREE",
+              "HOBBY",
+              "PRO",
+              "QUANT"
+            ]
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "Ticker": {
+        "name": "ticker",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "example": "AAPL",
+        "description": "Uppercase US ticker symbol."
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Missing or invalid authorization",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "TierForbidden": {
+        "description": "Tier too low for this endpoint",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TierGateError"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Ticker / resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "QuotaExceeded": {
+        "description": "Daily quota exhausted for this tier",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKeyAuth": []
+    }
+  ]
+}

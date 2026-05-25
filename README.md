@@ -28,7 +28,8 @@ Looking for a free key? Sign up at [factorweave.com](https://factorweave.com/) �
 | Path | What |
 | --- | --- |
 | [`webhooks/`](./webhooks/) | Alert-delivery templates — sample payload, Slack/Discord transformers (deployable as serverless functions), Zapier/Make/n8n setup guides + an importable n8n workflow, and a `fire-test-payload.sh` script for verifying your endpoint before going live. |
-| [`mcp-configs/`](./mcp-configs/) | Drop-in MCP client configs for Claude Desktop, Cursor, Continue, Cline, Windsurf, plus a generic descriptor. Copy → replace `fw_live_REPLACE_ME` → restart your client. |
+| [`mcp-configs/`](./mcp-configs/) | Drop-in MCP client configs for Claude Desktop, Cursor, Continue, Cline, Windsurf, ChatGPT Developer Mode, and OpenAI Codex CLI. Copy → replace `fw_live_REPLACE_ME` → restart your client. |
+| [`openai/`](./openai/) | OpenAI-specific recipes: runnable Agents SDK + Responses API examples, and a trimmed OpenAPI subset for publishing a Factor Weave Custom GPT in the ChatGPT GPT store. |
 | [`notebooks/`](./notebooks/) | 5 executable Jupyter notebooks covering the common workflows: first request · screening · similarity / peer set · leak-free backtest · regime conditioning. Run with or without an API key (demo fallback covers 8 sample tickers). |
 | [`postman/`](./postman/) | Auto-generated Postman v2.1 collection (30+ requests, 21 groups) + environment file. Imports into Postman, Insomnia, Bruno, Thunder Client. |
 

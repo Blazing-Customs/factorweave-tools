@@ -19,6 +19,8 @@ This directory ships **drop-in config snippets for every popular MCP-capable cli
 | Continue (VS Code / JetBrains) | `~/.continue/config.json` → `mcpServers` block | [`continue.json`](./continue.json) |
 | Cline (VS Code) | `cline_mcp_settings.json` (open via the Cline settings panel) | [`cline.json`](./cline.json) |
 | Windsurf / Codeium Cascade | `~/.codeium/windsurf/mcp_config.json` | [`windsurf.json`](./windsurf.json) |
+| OpenAI Codex CLI | `~/.codex/config.toml` (TOML, not JSON) | [`openai-codex.toml`](./openai-codex.toml) |
+| ChatGPT Developer Mode | UI — Settings → Connectors (beta toggle in Plus/Pro/Business/Enterprise) | [`openai-chatgpt.md`](./openai-chatgpt.md) (step-by-step) |
 | Generic (any compliant client) | — | [`generic.json`](./generic.json) |
 | Library use (without a client) | — | see the [Python SDK](https://github.com/Blazing-Customs/factorweave-tools/tree/main/python) or [TypeScript SDK](https://github.com/Blazing-Customs/factorweave-tools/tree/main/typescript) |
 
