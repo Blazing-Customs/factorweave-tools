@@ -1,0 +1,3566 @@
+{
+    "item": [
+        {
+            "name": "health",
+            "description": "",
+            "item": [
+                {
+                    "id": "98f49ce7-c7a9-466e-bf6c-85c3b240911d",
+                    "name": "Liveness check",
+                    "request": {
+                        "name": "Liveness check",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "health"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "GET",
+                        "body": {},
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "7d01ff1d-8361-4f1b-9a6f-97bc75969ea9",
+                            "name": "OK",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "health"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "status",
+            "description": "",
+            "item": [
+                {
+                    "id": "919e258d-ec2c-4a42-8f94-1e17b8336add",
+                    "name": "Detailed health + bundle freshness + degraded status",
+                    "request": {
+                        "name": "Detailed health + bundle freshness + degraded status",
+                        "description": {
+                            "content": "Returns 503 when degraded (bundle stale, DB unreachable, etc.) — designed for uptime monitors.",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "status"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "body": {},
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "25685d6c-15f2-45ce-bb61-989cb8ea21fa",
+                            "name": "Healthy",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "status"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [],
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        },
+                        {
+                            "id": "6a2f5517-f7e4-4aea-9b93-9f1125fe8c87",
+                            "name": "Degraded — see body.checks for what failed",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "status"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "Service Unavailable",
+                            "code": 503,
+                            "header": [],
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "manifest",
+            "description": "",
+            "item": [
+                {
+                    "id": "4c33e4dd-73e3-4bfd-ab35-206d75bd13bf",
+                    "name": "Static bundle metadata",
+                    "request": {
+                        "name": "Static bundle metadata",
+                        "description": {
+                            "content": "latest_date, ticker_count, generated_at, file map. Use this to know when the data refreshed.",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "manifest"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "body": {},
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "05cc0b41-715d-43bf-90c2-d7da0eb443a8",
+                            "name": "Manifest",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "manifest"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [],
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "config",
+            "description": "",
+            "item": [
+                {
+                    "id": "3f52160e-86cb-42b8-b801-cef175ba69ec",
+                    "name": "Runtime feature flags",
+                    "request": {
+                        "name": "Runtime feature flags",
+                        "description": {
+                            "content": "paid_tiers_enabled and Stripe publishable key. Read by the frontend at boot.",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "config"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "body": {},
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "f94d649f-6df2-4d4e-9f23-d82facfe0aa2",
+                            "name": "Config",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "config"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [],
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "demo",
+            "description": "",
+            "item": [
+                {
+                    "name": "{ticker}",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "b4449b97-b4cf-499b-8477-dd8a5c8135ca",
+                            "name": "No-auth taste — one of the sample tickers",
+                            "request": {
+                                "name": "No-auth taste — one of the sample tickers",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "demo",
+                                        ":ticker"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "type": "any",
+                                            "value": "<string>",
+                                            "key": "ticker",
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Uppercase US ticker symbol.",
+                                                "type": "text/plain"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "method": "GET",
+                                "body": {},
+                                "auth": null
+                            },
+                            "response": [
+                                {
+                                    "id": "66c3fa64-0122-4984-88e7-498dee9de7e5",
+                                    "name": "Curated factor subset + 8 cosine analogues",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "demo",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                },
+                                {
+                                    "id": "3fb52034-849c-4a51-a774-c8cbf13b12e2",
+                                    "name": "Ticker is not in the demo sample (free account unlocks all 10,000+)",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "demo",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "Forbidden",
+                                    "code": 403,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "tickers",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "7fa10e02-54c3-4e31-8a0d-9f3aefa92c0c",
+                            "name": "The demo-sample ticker list (8 names)",
+                            "request": {
+                                "name": "The demo-sample ticker list (8 names)",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "demo",
+                                        "tickers"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "method": "GET",
+                                "body": {},
+                                "auth": null
+                            },
+                            "response": [
+                                {
+                                    "id": "9b8e9c01-a68b-4a70-bf17-fbc5d9279192",
+                                    "name": "Ticker list",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "demo",
+                                                "tickers"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "auth",
+            "description": "",
+            "item": [
+                {
+                    "name": "register",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "c8cd57f9-1ed7-4950-ba49-b73bcb516f9c",
+                            "name": "Create account (free tier)",
+                            "request": {
+                                "name": "Create account (free tier)",
+                                "description": {
+                                    "content": "Always creates a FREE account regardless of submitted subscription_tier — paid upgrades happen via Stripe Checkout (POST /billing/create-checkout).",
+                                    "type": "text/plain"
+                                },
+                                "url": {
+                                    "path": [
+                                        "auth",
+                                        "register"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"email\": \"<email>\",\n  \"password\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "auth": null
+                            },
+                            "response": [
+                                {
+                                    "id": "388678c9-21b7-46b7-b99e-2a00e8860219",
+                                    "name": "Account created",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "auth",
+                                                "register"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"email\": \"<email>\",\n  \"password\": \"<string>\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "headerFamily": "json",
+                                                    "language": "json"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                },
+                                {
+                                    "id": "fb92d3ca-9b97-41ff-880c-12971814ce16",
+                                    "name": "Bad request",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "auth",
+                                                "register"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"email\": \"<email>\",\n  \"password\": \"<string>\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "headerFamily": "json",
+                                                    "language": "json"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "status": "Bad Request",
+                                    "code": 400,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                        }
+                                    ],
+                                    "body": "{\n  \"detail\": \"<string>\"\n}",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "json"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "login",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "bed45cf7-82a3-439a-8154-87e7067c9ee1",
+                            "name": "Exchange email + password for a JWT",
+                            "request": {
+                                "name": "Exchange email + password for a JWT",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "auth",
+                                        "login"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"email\": \"<email>\",\n  \"password\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "auth": null
+                            },
+                            "response": [
+                                {
+                                    "id": "b7681a75-3364-49ab-95f1-c5e1c70e4f08",
+                                    "name": "Token + profile",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "auth",
+                                                "login"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"email\": \"<email>\",\n  \"password\": \"<string>\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "headerFamily": "json",
+                                                    "language": "json"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                        }
+                                    ],
+                                    "body": "{\n  \"access_token\": \"<string>\",\n  \"token_type\": \"<string>\",\n  \"user_id\": \"<integer>\",\n  \"email\": \"<string>\",\n  \"subscription_tier\": \"QUANT\",\n  \"expires_at\": \"<dateTime>\"\n}",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "json"
+                                },
+                                {
+                                    "id": "f2b6b6ef-f08c-4fb3-b3b4-a9868e7c2ee9",
+                                    "name": "Missing or invalid authorization",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "auth",
+                                                "login"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"email\": \"<email>\",\n  \"password\": \"<string>\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "headerFamily": "json",
+                                                    "language": "json"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "status": "Unauthorized",
+                                    "code": 401,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                        }
+                                    ],
+                                    "body": "{\n  \"detail\": \"<string>\"\n}",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "json"
+                                },
+                                {
+                                    "id": "f7c3cc54-076f-48fd-8225-1c7c4413c747",
+                                    "name": "Rate-limited (too many failed attempts)",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "auth",
+                                                "login"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"email\": \"<email>\",\n  \"password\": \"<string>\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "headerFamily": "json",
+                                                    "language": "json"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "status": "Too Many Requests",
+                                    "code": 429,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "me",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "42a24ffb-8102-4758-b8e3-b5a9a6d27cdc",
+                            "name": "Current user profile + tier + daily usage",
+                            "request": {
+                                "name": "Current user profile + tier + daily usage",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "auth",
+                                        "me"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "method": "GET",
+                                "body": {},
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "13e2c383-bb2e-415b-9aca-1b9eeab57138",
+                                    "name": "Profile",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "auth",
+                                                "me"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "me",
+            "description": "",
+            "item": [
+                {
+                    "name": "keys",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "1eebba7a-2394-42fe-90ac-5c20dca10086",
+                            "name": "List your long-lived dev API keys",
+                            "request": {
+                                "name": "List your long-lived dev API keys",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "me",
+                                        "keys"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "method": "GET",
+                                "body": {},
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "2cd85006-ffa4-4658-9064-fb55f55852cd",
+                                    "name": "Key list (prefixes only — values shown once at creation)",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "me",
+                                                "keys"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        },
+                        {
+                            "id": "de094ec2-c45d-41f1-8c40-a6694fdcb16a",
+                            "name": "Mint a new dev API key",
+                            "request": {
+                                "name": "Mint a new dev API key",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "me",
+                                        "keys"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"<string>\",\n  \"ttl_days\": \"<integer>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "490e2f81-0392-47d0-8dbd-e5bf5c1e1628",
+                                    "name": "Key created (full value returned ONCE)",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "me",
+                                                "keys"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"name\": \"<string>\",\n  \"ttl_days\": \"<integer>\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "headerFamily": "json",
+                                                    "language": "json"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "status": "Created",
+                                    "code": 201,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        },
+                        {
+                            "name": "{id}",
+                            "description": "",
+                            "item": [
+                                {
+                                    "id": "acdbcb49-82a1-4448-ba92-49866f43a4d7",
+                                    "name": "Revoke a dev API key",
+                                    "request": {
+                                        "name": "Revoke a dev API key",
+                                        "description": {},
+                                        "url": {
+                                            "path": [
+                                                "me",
+                                                "keys",
+                                                ":id"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "type": "any",
+                                                    "value": "<integer>",
+                                                    "key": "id",
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) ",
+                                                        "type": "text/plain"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "method": "DELETE",
+                                        "body": {},
+                                        "auth": {
+                                            "type": "bearer",
+                                            "bearer": [
+                                                {
+                                                    "key": "token",
+                                                    "value": "{{bearerToken}}"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "response": [
+                                        {
+                                            "id": "1cc0f19b-89dc-4cf6-af4c-422464fbc0c1",
+                                            "name": "Revoked",
+                                            "originalRequest": {
+                                                "url": {
+                                                    "path": [
+                                                        "me",
+                                                        "keys",
+                                                        ":id"
+                                                    ],
+                                                    "host": [
+                                                        "{{baseUrl}}"
+                                                    ],
+                                                    "query": [],
+                                                    "variable": [
+                                                        {
+                                                            "disabled": false,
+                                                            "description": {
+                                                                "content": "(Required) ",
+                                                                "type": "text/plain"
+                                                            },
+                                                            "type": "any",
+                                                            "value": "<integer>",
+                                                            "key": "id"
+                                                        }
+                                                    ]
+                                                },
+                                                "header": [
+                                                    {
+                                                        "description": {
+                                                            "content": "Added as a part of security scheme: bearer",
+                                                            "type": "text/plain"
+                                                        },
+                                                        "key": "Authorization",
+                                                        "value": "Bearer <token>"
+                                                    }
+                                                ],
+                                                "method": "DELETE",
+                                                "body": {}
+                                            },
+                                            "status": "No Content",
+                                            "code": 204,
+                                            "header": [],
+                                            "cookie": [],
+                                            "_postman_previewlanguage": "text"
+                                        }
+                                    ],
+                                    "event": [],
+                                    "protocolProfileBehavior": {
+                                        "disableBodyPruning": true
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "features",
+            "description": "",
+            "item": [
+                {
+                    "name": "{ticker}",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "856cefc2-aed9-4369-a4fc-e660e627ce0c",
+                            "name": "Factor row for a ticker",
+                            "request": {
+                                "name": "Factor row for a ticker",
+                                "description": {
+                                    "content": "No date params → latest single row. ?date= → that exact date. ?start_date= & ?end_date= → range. History covers the last 252 trading days.",
+                                    "type": "text/plain"
+                                },
+                                "url": {
+                                    "path": [
+                                        "features",
+                                        ":ticker"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "date",
+                                            "value": "<date>"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "start_date",
+                                            "value": "<date>"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "end_date",
+                                            "value": "<date>"
+                                        }
+                                    ],
+                                    "variable": [
+                                        {
+                                            "type": "any",
+                                            "value": "<string>",
+                                            "key": "ticker",
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Uppercase US ticker symbol.",
+                                                "type": "text/plain"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {},
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "d8f39a49-9595-4a02-aea5-89e9ac392546",
+                                    "name": "Feature row(s)",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "features",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "key": "date",
+                                                    "value": "<date>"
+                                                },
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "key": "start_date",
+                                                    "value": "<date>"
+                                                },
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "key": "end_date",
+                                                    "value": "<date>"
+                                                }
+                                            ],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                        }
+                                    ],
+                                    "body": "[\n  {\n    \"ticker\": \"<string>\",\n    \"date\": \"<date>\",\n    \"rsi\": \"<number>\",\n    \"mom\": \"<number>\",\n    \"meanrev\": \"<number>\",\n    \"rv_20\": \"<number>\",\n    \"beta_spy\": \"<number>\",\n    \"comp_score\": \"<number>\",\n    \"q_comp_score\": \"<integer>\"\n  },\n  {\n    \"ticker\": \"<string>\",\n    \"date\": \"<date>\",\n    \"rsi\": \"<number>\",\n    \"mom\": \"<number>\",\n    \"meanrev\": \"<number>\",\n    \"rv_20\": \"<number>\",\n    \"beta_spy\": \"<number>\",\n    \"comp_score\": \"<number>\",\n    \"q_comp_score\": \"<integer>\"\n  }\n]",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "json"
+                                },
+                                {
+                                    "id": "08986c0e-152f-42c0-9a37-b4dd94700cab",
+                                    "name": "Ticker / resource not found",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "features",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "key": "date",
+                                                    "value": "<date>"
+                                                },
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "key": "start_date",
+                                                    "value": "<date>"
+                                                },
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "key": "end_date",
+                                                    "value": "<date>"
+                                                }
+                                            ],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "Not Found",
+                                    "code": 404,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                        }
+                                    ],
+                                    "body": "{\n  \"detail\": \"<string>\"\n}",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "json"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "top",
+            "description": "",
+            "item": [
+                {
+                    "id": "538dd82b-e9e9-4cc9-8b41-fe57415451e5",
+                    "name": "Top-N tickers by a factor",
+                    "request": {
+                        "name": "Top-N tickers by a factor",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "top"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) mom, meanrev, comp_score, rsi, z_52w, beta_spy, gap_pct, …",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "factor",
+                                    "value": "<string>"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "n",
+                                    "value": "25"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": " (This can only be one of asc,desc)",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "direction",
+                                    "value": "desc"
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "body": {},
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{bearerToken}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "id": "d1abff52-9ce7-47e6-b0f9-01c92cb38150",
+                            "name": "Ranked rows",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "top"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) mom, meanrev, comp_score, rsi, z_52w, beta_spy, gap_pct, …",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "factor",
+                                            "value": "<string>"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "n",
+                                            "value": "25"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": " (This can only be one of asc,desc)",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "direction",
+                                            "value": "desc"
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [],
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "csv",
+            "description": "",
+            "item": [
+                {
+                    "name": "features",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "80b437a0-7369-408f-b8be-77772a13e2e2",
+                            "name": "CSV export of a ticker's features",
+                            "request": {
+                                "name": "CSV export of a ticker's features",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "csv",
+                                        "features"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) ",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "ticker",
+                                            "value": "<string>"
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "text/csv"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {},
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "ba18c6b8-4955-4560-b0b9-a69e03609ca1",
+                                    "name": "CSV",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "csv",
+                                                "features"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) ",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "key": "ticker",
+                                                    "value": "<string>"
+                                                }
+                                            ],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Accept",
+                                                "value": "text/csv"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "text/csv"
+                                        }
+                                    ],
+                                    "body": "<string>",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "vector-search",
+            "description": "",
+            "item": [
+                {
+                    "name": "similar",
+                    "description": "",
+                    "item": [
+                        {
+                            "name": "{ticker}",
+                            "description": "",
+                            "item": [
+                                {
+                                    "id": "aafafe92-e230-4881-b4e8-acac4a194d19",
+                                    "name": "Top-K nearest setups by similarity",
+                                    "request": {
+                                        "name": "Top-K nearest setups by similarity",
+                                        "description": {
+                                            "content": "Tier-gated: cosine (FREE+), dtw (HOBBY+), label_aware (PRO+), supervised (QUANT). Each neighbor row carries its factor row + forward-return labels pre-joined.",
+                                            "type": "text/plain"
+                                        },
+                                        "url": {
+                                            "path": [
+                                                "vector-search",
+                                                "similar",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": " (This can only be one of cosine,dtw,label_aware,supervised)",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "key": "method",
+                                                    "value": "cosine"
+                                                },
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "key": "limit",
+                                                    "value": "50"
+                                                },
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "Require neighbor_date ≥ min_lookback_days before query_date. Use 30 to filter same-day co-moving ETFs.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "key": "min_lookback_days",
+                                                    "value": "0"
+                                                }
+                                            ],
+                                            "variable": [
+                                                {
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker",
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {},
+                                        "auth": {
+                                            "type": "bearer",
+                                            "bearer": [
+                                                {
+                                                    "key": "token",
+                                                    "value": "{{bearerToken}}"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "response": [
+                                        {
+                                            "id": "c0dce0f1-a267-4a69-b53e-e06340a6ca09",
+                                            "name": "Neighbors",
+                                            "originalRequest": {
+                                                "url": {
+                                                    "path": [
+                                                        "vector-search",
+                                                        "similar",
+                                                        ":ticker"
+                                                    ],
+                                                    "host": [
+                                                        "{{baseUrl}}"
+                                                    ],
+                                                    "query": [
+                                                        {
+                                                            "disabled": false,
+                                                            "description": {
+                                                                "content": " (This can only be one of cosine,dtw,label_aware,supervised)",
+                                                                "type": "text/plain"
+                                                            },
+                                                            "key": "method",
+                                                            "value": "cosine"
+                                                        },
+                                                        {
+                                                            "disabled": false,
+                                                            "description": {
+                                                                "content": "",
+                                                                "type": "text/plain"
+                                                            },
+                                                            "key": "limit",
+                                                            "value": "50"
+                                                        },
+                                                        {
+                                                            "disabled": false,
+                                                            "description": {
+                                                                "content": "Require neighbor_date ≥ min_lookback_days before query_date. Use 30 to filter same-day co-moving ETFs.",
+                                                                "type": "text/plain"
+                                                            },
+                                                            "key": "min_lookback_days",
+                                                            "value": "0"
+                                                        }
+                                                    ],
+                                                    "variable": [
+                                                        {
+                                                            "disabled": false,
+                                                            "description": {
+                                                                "content": "(Required) Uppercase US ticker symbol.",
+                                                                "type": "text/plain"
+                                                            },
+                                                            "type": "any",
+                                                            "value": "<string>",
+                                                            "key": "ticker"
+                                                        }
+                                                    ]
+                                                },
+                                                "header": [
+                                                    {
+                                                        "key": "Accept",
+                                                        "value": "application/json"
+                                                    },
+                                                    {
+                                                        "description": {
+                                                            "content": "Added as a part of security scheme: bearer",
+                                                            "type": "text/plain"
+                                                        },
+                                                        "key": "Authorization",
+                                                        "value": "Bearer <token>"
+                                                    }
+                                                ],
+                                                "method": "GET",
+                                                "body": {}
+                                            },
+                                            "status": "OK",
+                                            "code": 200,
+                                            "header": [
+                                                {
+                                                    "key": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"query_ticker\": \"<string>\",\n  \"query_date\": \"<date>\",\n  \"neighbors\": [\n    {\n      \"ticker\": \"<string>\",\n      \"date\": \"<date>\",\n      \"rank\": \"<integer>\",\n      \"score\": \"<number>\",\n      \"features\": {\n        \"ticker\": \"<string>\",\n        \"date\": \"<date>\",\n        \"rsi\": \"<number>\",\n        \"mom\": \"<number>\",\n        \"meanrev\": \"<number>\",\n        \"rv_20\": \"<number>\",\n        \"beta_spy\": \"<number>\",\n        \"comp_score\": \"<number>\",\n        \"q_comp_score\": \"<integer>\"\n      },\n      \"labels\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    },\n    {\n      \"ticker\": \"<string>\",\n      \"date\": \"<date>\",\n      \"rank\": \"<integer>\",\n      \"score\": \"<number>\",\n      \"features\": {\n        \"ticker\": \"<string>\",\n        \"date\": \"<date>\",\n        \"rsi\": \"<number>\",\n        \"mom\": \"<number>\",\n        \"meanrev\": \"<number>\",\n        \"rv_20\": \"<number>\",\n        \"beta_spy\": \"<number>\",\n        \"comp_score\": \"<number>\",\n        \"q_comp_score\": \"<integer>\"\n      },\n      \"labels\": {\n        \"key_0\": false\n      }\n    }\n  ]\n}",
+                                            "cookie": [],
+                                            "_postman_previewlanguage": "json"
+                                        },
+                                        {
+                                            "id": "b8343de0-d50b-498b-884c-b953cee8e6c4",
+                                            "name": "Tier too low for this endpoint",
+                                            "originalRequest": {
+                                                "url": {
+                                                    "path": [
+                                                        "vector-search",
+                                                        "similar",
+                                                        ":ticker"
+                                                    ],
+                                                    "host": [
+                                                        "{{baseUrl}}"
+                                                    ],
+                                                    "query": [
+                                                        {
+                                                            "disabled": false,
+                                                            "description": {
+                                                                "content": " (This can only be one of cosine,dtw,label_aware,supervised)",
+                                                                "type": "text/plain"
+                                                            },
+                                                            "key": "method",
+                                                            "value": "cosine"
+                                                        },
+                                                        {
+                                                            "disabled": false,
+                                                            "description": {
+                                                                "content": "",
+                                                                "type": "text/plain"
+                                                            },
+                                                            "key": "limit",
+                                                            "value": "50"
+                                                        },
+                                                        {
+                                                            "disabled": false,
+                                                            "description": {
+                                                                "content": "Require neighbor_date ≥ min_lookback_days before query_date. Use 30 to filter same-day co-moving ETFs.",
+                                                                "type": "text/plain"
+                                                            },
+                                                            "key": "min_lookback_days",
+                                                            "value": "0"
+                                                        }
+                                                    ],
+                                                    "variable": [
+                                                        {
+                                                            "disabled": false,
+                                                            "description": {
+                                                                "content": "(Required) Uppercase US ticker symbol.",
+                                                                "type": "text/plain"
+                                                            },
+                                                            "type": "any",
+                                                            "value": "<string>",
+                                                            "key": "ticker"
+                                                        }
+                                                    ]
+                                                },
+                                                "header": [
+                                                    {
+                                                        "key": "Accept",
+                                                        "value": "application/json"
+                                                    },
+                                                    {
+                                                        "description": {
+                                                            "content": "Added as a part of security scheme: bearer",
+                                                            "type": "text/plain"
+                                                        },
+                                                        "key": "Authorization",
+                                                        "value": "Bearer <token>"
+                                                    }
+                                                ],
+                                                "method": "GET",
+                                                "body": {}
+                                            },
+                                            "status": "Forbidden",
+                                            "code": 403,
+                                            "header": [
+                                                {
+                                                    "key": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"detail\": \"<string>\",\n  \"your_tier\": \"QUANT\",\n  \"required_tier\": \"QUANT\"\n}",
+                                            "cookie": [],
+                                            "_postman_previewlanguage": "json"
+                                        }
+                                    ],
+                                    "event": [],
+                                    "protocolProfileBehavior": {
+                                        "disableBodyPruning": true
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "labels",
+            "description": "",
+            "item": [
+                {
+                    "name": "{ticker}",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "fd91dbc1-94be-4ed9-bf27-8fea01db2f93",
+                            "name": "Leak-free forward-return labels (PRO+)",
+                            "request": {
+                                "name": "Leak-free forward-return labels (PRO+)",
+                                "description": {
+                                    "content": "fwd_ret_1d/5d/20d + binary targets (target_1d_up1, target_5d_up3, target_20d_up10). Last 252 trading days.",
+                                    "type": "text/plain"
+                                },
+                                "url": {
+                                    "path": [
+                                        "labels",
+                                        ":ticker"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "type": "any",
+                                            "value": "<string>",
+                                            "key": "ticker",
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Uppercase US ticker symbol.",
+                                                "type": "text/plain"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {},
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "3d4418cd-977a-45f7-bf8a-e75d5a724a4d",
+                                    "name": "Labels",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "labels",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                },
+                                {
+                                    "id": "ccb6b7ff-fbc3-4464-8a20-9908b5929522",
+                                    "name": "Tier too low for this endpoint",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "labels",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "Forbidden",
+                                    "code": 403,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                        }
+                                    ],
+                                    "body": "{\n  \"detail\": \"<string>\",\n  \"your_tier\": \"QUANT\",\n  \"required_tier\": \"QUANT\"\n}",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "json"
+                                },
+                                {
+                                    "id": "3315cd17-c693-4b8d-b264-70e64a9f7a1b",
+                                    "name": "Ticker / resource not found",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "labels",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "Not Found",
+                                    "code": 404,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                        }
+                                    ],
+                                    "body": "{\n  \"detail\": \"<string>\"\n}",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "json"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "market-context",
+            "description": "",
+            "item": [
+                {
+                    "id": "aca8d451-f909-4c74-b83a-30564d789feb",
+                    "name": "Whole-universe factor dispersion, breadth, regime",
+                    "request": {
+                        "name": "Whole-universe factor dispersion, breadth, regime",
+                        "description": {
+                            "content": "FREE = today's reading only; HOBBY+ = full 252-day history. ?latest=1 trims to today for any tier.",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "market-context"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": " (This can only be one of 0,1)",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "latest",
+                                    "value": "1"
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "body": {},
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{bearerToken}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "id": "b2560021-fccf-4aa5-84f8-8d412155f9c1",
+                            "name": "Market context payload",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "market-context"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": " (This can only be one of 0,1)",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "latest",
+                                            "value": "1"
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [],
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "report-card",
+            "description": "",
+            "item": [
+                {
+                    "name": "{ticker}",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "f78841cf-bf7a-4f7b-89cc-31e27fc30b4a",
+                            "name": "Per-ticker digest — ranks, regime, risk cluster, unusualness (HOBBY+)",
+                            "request": {
+                                "name": "Per-ticker digest — ranks, regime, risk cluster, unusualness (HOBBY+)",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "report-card",
+                                        ":ticker"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "type": "any",
+                                            "value": "<string>",
+                                            "key": "ticker",
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Uppercase US ticker symbol.",
+                                                "type": "text/plain"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {},
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "dabaf728-4b90-4c1d-9b4a-bb127ce2ecbf",
+                                    "name": "Report card",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "report-card",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                },
+                                {
+                                    "id": "4d0068b7-d583-4ad7-bce1-1208db82e09c",
+                                    "name": "Tier too low for this endpoint",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "report-card",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "Forbidden",
+                                    "code": 403,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                        }
+                                    ],
+                                    "body": "{\n  \"detail\": \"<string>\",\n  \"your_tier\": \"QUANT\",\n  \"required_tier\": \"QUANT\"\n}",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "json"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "risk-cluster",
+            "description": "",
+            "item": [
+                {
+                    "name": "{ticker}",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "43609bd9-6e9d-4419-a744-f607dfeccad0",
+                            "name": "Volatility regime a ticker's factor analogues landed in (PRO+)",
+                            "request": {
+                                "name": "Volatility regime a ticker's factor analogues landed in (PRO+)",
+                                "description": {
+                                    "content": "calm / normal / stressed — derived from neighbours' realized forward vol. A risk-coherence signal, not a vol forecast.",
+                                    "type": "text/plain"
+                                },
+                                "url": {
+                                    "path": [
+                                        "risk-cluster",
+                                        ":ticker"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "type": "any",
+                                            "value": "<string>",
+                                            "key": "ticker",
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Uppercase US ticker symbol.",
+                                                "type": "text/plain"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {},
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "c1a67dc3-6fd5-4864-bd54-db7172393f8e",
+                                    "name": "Risk-cluster tag",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "risk-cluster",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                },
+                                {
+                                    "id": "46a0f457-a8d6-4e21-b324-5ea4bb38dcce",
+                                    "name": "Tier too low for this endpoint",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "risk-cluster",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "Forbidden",
+                                    "code": 403,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                        }
+                                    ],
+                                    "body": "{\n  \"detail\": \"<string>\",\n  \"your_tier\": \"QUANT\",\n  \"required_tier\": \"QUANT\"\n}",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "json"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "embedding",
+            "description": "",
+            "item": [
+                {
+                    "name": "{ticker}",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "8528a018-2411-4ea1-a1aa-3bd0bd2ce1f6",
+                            "name": "Raw 32-D regime-aware embedding vector (QUANT)",
+                            "request": {
+                                "name": "Raw 32-D regime-aware embedding vector (QUANT)",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "embedding",
+                                        ":ticker"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "type": "any",
+                                            "value": "<string>",
+                                            "key": "ticker",
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Uppercase US ticker symbol.",
+                                                "type": "text/plain"
+                                            }
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {},
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "f165e768-499e-450e-9753-c0ccbc70340a",
+                                    "name": "32-D vector",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "embedding",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                        }
+                                    ],
+                                    "body": "{\n  \"ticker\": \"<string>\",\n  \"as_of\": \"<date>\",\n  \"dim\": \"<integer>\",\n  \"embedding\": [\n    \"<number>\",\n    \"<number>\"\n  ]\n}",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "json"
+                                },
+                                {
+                                    "id": "ae42ab44-56b4-4e4f-a700-71c54c3b8a22",
+                                    "name": "Tier too low for this endpoint",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "embedding",
+                                                ":ticker"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) Uppercase US ticker symbol.",
+                                                        "type": "text/plain"
+                                                    },
+                                                    "type": "any",
+                                                    "value": "<string>",
+                                                    "key": "ticker"
+                                                }
+                                            ]
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Accept",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "Forbidden",
+                                    "code": 403,
+                                    "header": [
+                                        {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                        }
+                                    ],
+                                    "body": "{\n  \"detail\": \"<string>\",\n  \"your_tier\": \"QUANT\",\n  \"required_tier\": \"QUANT\"\n}",
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "json"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "alerts",
+            "description": "",
+            "item": [
+                {
+                    "name": "rules",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "d8e5e1cb-2c6b-4ef9-a982-e627507c588f",
+                            "name": "List your alert rules",
+                            "request": {
+                                "name": "List your alert rules",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "alerts",
+                                        "rules"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "method": "GET",
+                                "body": {},
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "8acbcaf4-d7b0-4122-b586-9a44cf51e1a1",
+                                    "name": "Rules",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "alerts",
+                                                "rules"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "GET",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        },
+                        {
+                            "id": "09a852ab-9120-4184-8197-9d9d2f7eda75",
+                            "name": "Create an alert rule",
+                            "request": {
+                                "name": "Create an alert rule",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "alerts",
+                                        "rules"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"name\": \"<string>\",\n  \"indicator\": \"rsi\",\n  \"condition\": \"crosses_below\",\n  \"value\": \"<number>\",\n  \"description\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "2a79985c-d246-4c4a-994a-6c791b3c7e74",
+                                    "name": "Created",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "alerts",
+                                                "rules"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"name\": \"<string>\",\n  \"indicator\": \"rsi\",\n  \"condition\": \"crosses_below\",\n  \"value\": \"<number>\",\n  \"description\": \"<string>\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "headerFamily": "json",
+                                                    "language": "json"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "status": "Created",
+                                    "code": 201,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        },
+                        {
+                            "name": "{id}",
+                            "description": "",
+                            "item": [
+                                {
+                                    "id": "85c619c2-bce7-478a-b6b2-04de0797a0d4",
+                                    "name": "Delete an alert rule",
+                                    "request": {
+                                        "name": "Delete an alert rule",
+                                        "description": {},
+                                        "url": {
+                                            "path": [
+                                                "alerts",
+                                                "rules",
+                                                ":id"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": [
+                                                {
+                                                    "type": "any",
+                                                    "value": "<integer>",
+                                                    "key": "id",
+                                                    "disabled": false,
+                                                    "description": {
+                                                        "content": "(Required) ",
+                                                        "type": "text/plain"
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        "method": "DELETE",
+                                        "body": {},
+                                        "auth": {
+                                            "type": "bearer",
+                                            "bearer": [
+                                                {
+                                                    "key": "token",
+                                                    "value": "{{bearerToken}}"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "response": [
+                                        {
+                                            "id": "7d126a79-e072-47f5-abed-e35344b16ce6",
+                                            "name": "Deleted",
+                                            "originalRequest": {
+                                                "url": {
+                                                    "path": [
+                                                        "alerts",
+                                                        "rules",
+                                                        ":id"
+                                                    ],
+                                                    "host": [
+                                                        "{{baseUrl}}"
+                                                    ],
+                                                    "query": [],
+                                                    "variable": [
+                                                        {
+                                                            "disabled": false,
+                                                            "description": {
+                                                                "content": "(Required) ",
+                                                                "type": "text/plain"
+                                                            },
+                                                            "type": "any",
+                                                            "value": "<integer>",
+                                                            "key": "id"
+                                                        }
+                                                    ]
+                                                },
+                                                "header": [
+                                                    {
+                                                        "description": {
+                                                            "content": "Added as a part of security scheme: bearer",
+                                                            "type": "text/plain"
+                                                        },
+                                                        "key": "Authorization",
+                                                        "value": "Bearer <token>"
+                                                    }
+                                                ],
+                                                "method": "DELETE",
+                                                "body": {}
+                                            },
+                                            "status": "No Content",
+                                            "code": 204,
+                                            "header": [],
+                                            "cookie": [],
+                                            "_postman_previewlanguage": "text"
+                                        }
+                                    ],
+                                    "event": [],
+                                    "protocolProfileBehavior": {
+                                        "disableBodyPruning": true
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "billing",
+            "description": "",
+            "item": [
+                {
+                    "name": "create-checkout",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "d20ba428-de8a-419a-b660-b93f1703a62d",
+                            "name": "Stripe Checkout URL for a tier upgrade",
+                            "request": {
+                                "name": "Stripe Checkout URL for a tier upgrade",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "billing",
+                                        "create-checkout"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"tier\": \"PRO\",\n  \"billing_period\": \"monthly\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "d1ec28a7-c67a-440f-b011-6afda7aa7729",
+                                    "name": "checkout_url",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "billing",
+                                                "create-checkout"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "key": "Content-Type",
+                                                "value": "application/json"
+                                            },
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "POST",
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n  \"tier\": \"PRO\",\n  \"billing_period\": \"monthly\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "headerFamily": "json",
+                                                    "language": "json"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "create-portal",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "1d4b733f-f341-4ac1-af43-6c9948b98bc9",
+                            "name": "Stripe Billing Portal URL",
+                            "request": {
+                                "name": "Stripe Billing Portal URL",
+                                "description": {},
+                                "url": {
+                                    "path": [
+                                        "billing",
+                                        "create-portal"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "method": "POST",
+                                "body": {},
+                                "auth": {
+                                    "type": "bearer",
+                                    "bearer": [
+                                        {
+                                            "key": "token",
+                                            "value": "{{bearerToken}}"
+                                        }
+                                    ]
+                                }
+                            },
+                            "response": [
+                                {
+                                    "id": "3243bf29-2e55-4f95-b7e9-75adc0e4b1fb",
+                                    "name": "portal_url",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "billing",
+                                                "create-portal"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "header": [
+                                            {
+                                                "description": {
+                                                    "content": "Added as a part of security scheme: bearer",
+                                                    "type": "text/plain"
+                                                },
+                                                "key": "Authorization",
+                                                "value": "Bearer <token>"
+                                            }
+                                        ],
+                                        "method": "POST",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "webhook",
+                    "description": "",
+                    "item": [
+                        {
+                            "id": "257c8d64-bd29-4a7e-b6f2-08851b5e76e1",
+                            "name": "Stripe webhook receiver",
+                            "request": {
+                                "name": "Stripe webhook receiver",
+                                "description": {
+                                    "content": "Signature-verified inside the handler. Not for client use.",
+                                    "type": "text/plain"
+                                },
+                                "url": {
+                                    "path": [
+                                        "billing",
+                                        "webhook"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "method": "POST",
+                                "body": {},
+                                "auth": null
+                            },
+                            "response": [
+                                {
+                                    "id": "4941873b-874a-4def-8a7e-f002ae883c1b",
+                                    "name": "Received",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "billing",
+                                                "webhook"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "method": "POST",
+                                        "body": {}
+                                    },
+                                    "status": "OK",
+                                    "code": 200,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                },
+                                {
+                                    "id": "3576d101-5aa6-42f5-a66a-360e76775c75",
+                                    "name": "Invalid signature",
+                                    "originalRequest": {
+                                        "url": {
+                                            "path": [
+                                                "billing",
+                                                "webhook"
+                                            ],
+                                            "host": [
+                                                "{{baseUrl}}"
+                                            ],
+                                            "query": [],
+                                            "variable": []
+                                        },
+                                        "method": "POST",
+                                        "body": {}
+                                    },
+                                    "status": "Bad Request",
+                                    "code": 400,
+                                    "header": [],
+                                    "cookie": [],
+                                    "_postman_previewlanguage": "text"
+                                }
+                            ],
+                            "event": [],
+                            "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "usage",
+            "description": "",
+            "item": [
+                {
+                    "id": "ca1eb2b7-4745-45a7-8497-77b548123279",
+                    "name": "Today + month-to-date stats",
+                    "request": {
+                        "name": "Today + month-to-date stats",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "usage"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "body": {},
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{bearerToken}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "id": "18ce1729-4dcb-4567-bd58-fbe71c993ebd",
+                            "name": "Usage payload",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "usage"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [],
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "recent-activity",
+            "description": "",
+            "item": [
+                {
+                    "id": "a4f38e19-6d33-4064-b3cd-e6aa05482154",
+                    "name": "Your last 50 API calls",
+                    "request": {
+                        "name": "Your last 50 API calls",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "recent-activity"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "method": "GET",
+                        "body": {},
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{bearerToken}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "id": "45446f39-8301-4419-b965-4d53b4d9eb73",
+                            "name": "Activity log",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "recent-activity"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [],
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
+            "name": "mcp",
+            "description": "",
+            "item": [
+                {
+                    "id": "a3d72b94-505f-4851-9084-b566258a1efa",
+                    "name": "Model Context Protocol — stateless streamable-HTTP",
+                    "request": {
+                        "name": "Model Context Protocol — stateless streamable-HTTP",
+                        "description": {
+                            "content": "JSON-RPC 2.0 over POST. Supports `initialize`, `tools/list`, `tools/call`. 12 tools available — see https://factorweave.com/mcp.html and the MCP docs panel.",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "mcp"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "a1f94250-6b63-4f41-b959-e27ee6c17e63",
+                            "name": "JSON-RPC response",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "mcp"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [],
+                            "cookie": [],
+                            "_postman_previewlanguage": "text"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        }
+    ],
+    "event": [],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "https://factorweave.com/api"
+        }
+    ],
+    "info": {
+        "_postman_id": "20003b71-5646-4048-97e7-55887af47b64",
+        "name": "Factor Weave API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": {
+            "content": "Quantitative factor data, vector similarity search, leak-free forward-return labels and derived market analytics (factor dispersion, regime, risk-cluster tags, 32-D embeddings) for ~12,000 US-listed tickers.\n\n**Auth:** all data endpoints require either a `Bearer <jwt>` (obtain via POST /auth/login) or an `X-API-Key: fw_live_…` header (mint at /me/keys). Tier gating is enforced per endpoint — see the [Tiers docs](https://factorweave.com/#docs).\n\n**Honest framing:** the data is a research substrate, not a return-prediction service. Our own leak-free testing ([research note](https://factorweave.com/research.html)) shows factor similarity does not forecast returns; the supervised similarity method is a return-weighted projection, not an oracle.\n\nContact Support:\n Name: Factor Weave support\n Email: support@factorweave.com",
+            "type": "text/plain"
+        }
+    }
+}

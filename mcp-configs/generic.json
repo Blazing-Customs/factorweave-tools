@@ -1,0 +1,10 @@
+{
+  "name": "factorweave",
+  "url": "https://factorweave.com/api/mcp",
+  "transport": "streamable-http",
+  "protocolVersion": "2025-03-26",
+  "headers": {
+    "Authorization": "Bearer fw_live_REPLACE_ME"
+  },
+  "_comment": "Generic MCP server descriptor. Adapt the wrapping keys to your client's expected schema (see Claude Desktop / Cursor / Continue / Cline / Windsurf examples in this directory for concrete shapes)."
+}

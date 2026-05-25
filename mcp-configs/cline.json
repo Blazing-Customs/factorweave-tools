@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "factorweave": {
+      "type": "streamableHttp",
+      "url": "https://factorweave.com/api/mcp",
+      "headers": {
+        "Authorization": "Bearer fw_live_REPLACE_ME"
+      },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}

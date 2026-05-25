@@ -1,0 +1,93 @@
+{
+  "name": "Factor Weave alerts → Slack + Discord + Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "factorweave-alerts",
+        "options": {}
+      },
+      "id": "trigger-webhook",
+      "name": "Factor Weave webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.body.source}}",
+              "value2": "factorweave"
+            }
+          ]
+        }
+      },
+      "id": "if-from-factorweave",
+      "name": "Is from Factor Weave?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#quant-alerts",
+        "text": "=:factorweave: *{{$json.body.rule.name}}* — {{$json.body.count}} ticker(s)\n`{{$json.body.rule.indicator}} {{$json.body.rule.condition}} {{$json.body.rule.value}}` · _as of {{$json.body.as_of}}_\n\n{{$json.body.matches.map(m => '• *' + m.ticker + '* — ' + m.value.toFixed(2)).join('\\n')}}",
+        "otherOptions": {}
+      },
+      "id": "slack-send",
+      "name": "Post to Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [700, 200],
+      "credentials": {
+        "slackApi": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "Slack — quant-alerts"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": "REPLACE_WITH_YOUR_SHEETS_ID",
+        "sheetName": "alerts",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fired_at": "={{$now}}",
+            "rule": "={{$json.body.rule.name}}",
+            "indicator": "={{$json.body.rule.indicator}}",
+            "threshold": "={{$json.body.rule.value}}",
+            "as_of": "={{$json.body.as_of}}",
+            "count": "={{$json.body.count}}",
+            "top_ticker": "={{$json.body.matches[0].ticker}}",
+            "top_value": "={{$json.body.matches[0].value}}"
+          }
+        }
+      },
+      "id": "sheets-log",
+      "name": "Audit log to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [700, 400]
+    }
+  ],
+  "connections": {
+    "Factor Weave webhook": {
+      "main": [[{ "node": "Is from Factor Weave?", "type": "main", "index": 0 }]]
+    },
+    "Is from Factor Weave?": {
+      "main": [
+        [
+          { "node": "Post to Slack", "type": "main", "index": 0 },
+          { "node": "Audit log to Google Sheets", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "tags": [{ "name": "factorweave" }, { "name": "alerts" }]
+}

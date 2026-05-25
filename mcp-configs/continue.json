@@ -1,0 +1,18 @@
+{
+  "experimental": {
+    "modelContextProtocolServers": [
+      {
+        "transport": {
+          "type": "streamable-http",
+          "url": "https://factorweave.com/api/mcp",
+          "requestOptions": {
+            "headers": {
+              "Authorization": "Bearer fw_live_REPLACE_ME"
+            }
+          }
+        },
+        "name": "factorweave"
+      }
+    ]
+  }
+}

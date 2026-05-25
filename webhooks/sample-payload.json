@@ -1,0 +1,20 @@
+{
+  "source": "factorweave",
+  "rule": {
+    "id": 17,
+    "name": "RSI overbought",
+    "indicator": "rsi",
+    "condition": ">",
+    "value": 70
+  },
+  "as_of": "2026-05-22",
+  "count": 5,
+  "truncated": false,
+  "matches": [
+    { "ticker": "NVDA", "value": 88.3, "comp_score": 0.18, "regime": "mid" },
+    { "ticker": "AAPL", "value": 82.1, "comp_score": 0.14, "regime": "mid" },
+    { "ticker": "MSFT", "value": 78.6, "comp_score": 0.11, "regime": "mid" },
+    { "ticker": "META", "value": 73.4, "comp_score": 0.09, "regime": "mid" },
+    { "ticker": "GOOGL", "value": 71.2, "comp_score": 0.07, "regime": "mid" }
+  ]
+}
