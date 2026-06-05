@@ -1,6 +1,6 @@
 # factorweave (R)
 
-R client for the [Factor Weave](https://factorweave.com/) quant-factor data API. Daily factor scores, vector similarity, leak-free forward-return labels, derived market analytics (factor dispersion, regime, risk-cluster tags, 32-D embeddings) for ~12,000 US-listed tickers.
+R client for the [Factor Weave](https://factorweave.com/) quant-factor data API. Daily factor scores, vector similarity, leak-free forward-return labels, derived market analytics (factor dispersion, regime, risk-cluster tags, 32-D embeddings, cross-asset regime conditioners, VX term structure, per-ticker futures factors with Open Interest, intraday-derived stock factors) for 14,000+ tickers across equities, ETFs, indices, FX, crypto, and futures.
 
 ## Install
 

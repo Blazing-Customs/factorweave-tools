@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.factorweave/mcp",
+  "title": "Factor Weave",
+  "description": "Quant-factor data for 14,684 tickers across equities, ETFs, indices, FX, crypto and futures — factor scores, vector similarity, leak-free forward-return labels, cross-asset regime conditioners, VX term structure, and risk-coherence analogues. A research substrate, not a return-prediction service.",
+  "version": "1.0.0",
+  "repository": {
+    "url": "https://github.com/Blazing-Customs/factorweave-tools",
+    "source": "github"
+  },
+  "websiteUrl": "https://factorweave.com/mcp.html",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://factorweave.com/api/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Bearer fw_live_… API key (free at factorweave.com) or an OAuth 2.1 access token. MCP tools work on HOBBY tier and above; anonymous clients can still call initialize / tools/list / get_manifest.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

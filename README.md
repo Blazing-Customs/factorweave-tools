@@ -1,6 +1,6 @@
 # factorweave-tools
 
-Public tooling for the **[Factor Weave](https://factorweave.com/)** quant-factor data API — clients, add-ons, and integration recipes for the ~12,000 US-listed tickers covered by the platform.
+Public tooling for the **[Factor Weave](https://factorweave.com/)** quant-factor data API — clients, add-ons, and integration recipes for the 14,000+ tickers covered by the platform across equities, ETFs, indices, FX, crypto, and futures (with Open Interest).
 
 Looking for a free key? Sign up at [factorweave.com](https://factorweave.com/) — 250 calls/day, no card.
 
@@ -89,13 +89,18 @@ hits <- fw_similar(client, "AAPL", method = "cosine", limit = 10)
 
 ## What this dataset covers
 
-- ~12,000 US-listed tickers
-- Daily, point-in-time, leak-free
+- **14,684 tickers across 6 asset classes**: 9,231 stocks · 5,040 ETFs · 128 indices · 132 futures contracts · 79 FX pairs · 74 cryptos
+- Daily, point-in-time, leak-free, survivor-free (includes 1,483 names delisted between 2000 and today)
 - ~28 factor columns per ticker-day (returns, momentum, mean-reversion, RSI, ATR%, realized vol, beta vs SPY, composite score, cross-sectional ranks)
-- Forward-return labels (1d / 5d / 20d), leak-free
+- **Futures factor decomposition** for top 30 contracts (VX, ES, NQ, CL, GC, ZN, DX, BTC, …) with Open Interest features `oi_z20`, `oi_vol_ratio`, `oi_chg_5d` (PRO+)
+- **Intraday-derived stock factors** (PRO+) from 30-min bars: `overnight_ret`, `intraday_ret` (RTH-only), opening-range (`or_high_30`, `or_low_30`, `or_breakout_pct`), `vwap`, `vwap_dev_close`, `intraday_rv` (annualised), `late_drift`. Auto-included on the daily stock row from `/api/features/{ticker}` for PRO+ subscribers
+- Forward-return labels (1d / 5d / 20d), leak-free, total-return aware (dividends reinvested)
 - SPY-vol regime tagging (low / mid / high)
+- **Cross-asset regime conditioners**: DXY, VIX, VVIX, VIX9D, TNX, XAU, VX-continuous closes + 20-day z-scores
+- **VX term structure** (`(VX − VIX) / VIX`) — single-number contango/backwardation feed with 17-year history (HOBBY+)
 - 32-dimensional regime-aware factor-state embeddings
 - Top-K nearest analogues via cosine / DTW / label-aware / supervised PLS
+- **Regime-conditional similarity** via `?conditioner=vx_term_structure` (QUANT)
 - Daily factor dispersion, market breadth, regime transition odds
 - Per-ticker risk-cluster tags (calm / normal / stressed)
 
@@ -105,7 +110,7 @@ Tier matrix is on the [pricing page](https://factorweave.com/landing-pages/).
 
 ## Honest positioning
 
-Factor Weave is a **research substrate**, not a return-prediction service. Our own leak-free probes show factor similarity does *not* forecast forward returns (cross-sectional information coefficient is statistically zero). Only risk-coherence — using factor analogues to forecast forward realized volatility — shows a meaningful signal (IC +0.062, t-stat +8.3 across 237 monthly observations 2005–2024). The full methodology and results are published at [factorweave.com/research.html](https://factorweave.com/research.html).
+Factor Weave is a **research substrate**, not a return-prediction service. Our own leak-free *and* survivor-free probes (14,181 US tickers including 1,483 names delisted between 2000 and today; forward-return labels include reinvested dividends) show factor similarity does *not* forecast forward returns (cross-sectional information coefficient is statistically zero across five methodologies). Only risk-coherence — using factor analogues to forecast forward realized volatility — shows a meaningful signal (IC +0.075, t-stat +10.2 across 237 monthly observations 2005–2024). The full methodology and results are published at [factorweave.com/research.html](https://factorweave.com/research.html).
 
 Use these tools the honest way: to screen, explore, and assemble research data. The thesis is yours.
 

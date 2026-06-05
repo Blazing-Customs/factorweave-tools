@@ -3,7 +3,11 @@
 Typed client for the [Factor Weave](https://factorweave.com/) quant data API.
 Factor data, vector similarity, leak-free forward-return labels, derived
 market analytics (factor dispersion, regime, risk-cluster tags, 32-D
-embeddings) and MCP — for ~12,000 US-listed tickers.
+embeddings, cross-asset regime conditioners, VX term structure,
+per-ticker futures factors with Open Interest, intraday-derived stock
+factors with overnight/opening-range/VWAP/intraday-RV/late-drift) and
+MCP — for 14,000+ tickers across equities, ETFs, indices, FX, crypto,
+and futures.
 
 ## Install
 
